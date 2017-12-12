@@ -19,7 +19,9 @@ from cyborg.common.i18n import _
 
 
 opts = [
-    cfg.HostAddressOpt('host_ip',
+    # oslo_config has no HostAddressOpt class. by bob
+    #cfg.HostAddressOpt('host_ip',
+    cfg.StrOpt('host_ip',
                        default='0.0.0.0',
                        help=_('The IP address on which cyborg-api listens.')),
     cfg.PortOpt('port',

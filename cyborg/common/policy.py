@@ -38,6 +38,8 @@ default_policies = [
     # Legacy setting, don't remove. Likely to be overridden by operators who
     # forget to update their policy.json configuration file.
     # This gets rolled into the new "is_admin" rule below.
+    # comment by bob. There is no RuleDefault class in policy of mitaka release.
+    ''' 
     policy.RuleDefault('admin_api',
                        'role:admin or role:administrator',
                        description='Legacy rule for cloud admin access'),
@@ -66,6 +68,7 @@ default_policies = [
     policy.RuleDefault('default',
                        'rule:admin_or_owner',
                        description='Default API access rule'),
+    '''
 ]
 
 # NOTE: to follow policy-in-code spec, we define defaults for
@@ -74,6 +77,8 @@ default_policies = [
 #       depend on their existence throughout the code.
 
 accelerator_policies = [
+    # comment by bob. There is no RuleDefault class in policy of mitaka release.
+    '''
     policy.RuleDefault('cyborg:accelerator:get',
                        'rule:default',
                        description='Retrieve accelerator records'),
@@ -86,6 +91,8 @@ accelerator_policies = [
     policy.RuleDefault('cyborg:accelerator:update',
                        'rule:default',
                        description='Update accelerator records'),
+   '''
+    
 ]
 
 
@@ -121,7 +128,9 @@ def init_enforcer(policy_file=None, rules=None,
                                 rules=rules,
                                 default_rule=default_rule,
                                 use_conf=use_conf)
-    _ENFORCER.register_defaults(list_policies())
+    
+    # no register_defaults method. by bob
+    #_ENFORCER.register_defaults(list_policies())
 
 
 def get_enforcer():
@@ -148,7 +157,9 @@ def authorize(rule, target, creds, do_raise=False, *args, **kwargs):
     """
     enforcer = get_enforcer()
     try:
-        return enforcer.authorize(rule, target, creds, do_raise=do_raise,
+        # no authorize. comment by bob
+        #return enforcer.authorize(rule, target, creds, do_raise=do_raise,
+        return enforcer.enforce(rule, target, creds, do_raise=do_raise,
                                   *args, **kwargs)
     except policy.PolicyNotAuthorized:
         raise exception.HTTPForbidden(resource=rule)
