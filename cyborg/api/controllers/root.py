@@ -55,6 +55,7 @@ class RootController(rest.RestController):
 
     v1 = v1.Controller()
 
+    # expose Root in json type, root url
     @expose.expose(Root)
     def get(self):
         return Root.convert()
