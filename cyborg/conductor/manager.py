@@ -39,5 +39,27 @@ class ConductorManager(object):
         :param acc_obj: a changed (but not saved) accelerator object.
         :returns: created accelerator object.
         """
-        acc_obj.create()
+        base_options={
+            'project_id' : context.tenant,
+            'user_id' : context.user
+        }
+        acc_obj.update(base_options)
+        acc_obj.create(context)
         return acc_obj
+
+    def accelerator_update(self, context, acc_obj):
+        """Update an accelerator.
+        :param context: request context.
+        :param acc_obj: an accelerator object to update.
+        :return: updated accelerator objects."""
+
+        acc_obj.save(context)
+        return acc_obj
+
+    def accelerator_delete(self, contect, acc_obj):
+        """Delete an accelerator.
+
+        :param context: request context.
+        :param acc_obj: an accelerator object to delete."""
+
+        acc_obj.destory(context)

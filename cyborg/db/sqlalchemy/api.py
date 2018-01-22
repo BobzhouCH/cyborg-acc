@@ -17,16 +17,19 @@
 
 import threading
 
+from oslo_db import api as oslo_db_api
 from oslo_db import exception as db_exc
 from oslo_db.sqlalchemy import enginefacade
 from oslo_db.sqlalchemy import utils as sqlalchemyutils
 from oslo_log import log
 from oslo_utils import strutils
 from oslo_utils import uuidutils
+from sqlalchemy.orm.exc import NoResultFound
 
 from cyborg.common import exception
 from cyborg.db import api
 from cyborg.db.sqlalchemy import models
+from cyborg.common.i18n import _
 
 
 _CONTEXT = threading.local()
@@ -89,6 +92,21 @@ def add_identity_filter(query, value):
         raise exception.InvalidIdentity(identity=value)
 
 
+def _paginate_query(context, model, limit, marker, sort_key, sort_dir, query):
+    sort_keys = ['id']
+    if sort_key and sort_key not in sort_keys:
+        sort_keys.insert(0, sort_key)
+    try:
+        query = sqlalchemyutils.paginate_query(query, model, limit, sort_keys,
+                                               marker=marker,
+                                               sort_dir=sort_dir)
+    except db_exc.InvalidSortKey:
+        raise exception.InvalidParameterValue(
+            _('The sort_key value "%(key)s" is an invalid field for sorting')
+            % {'key': sort_key})
+    return query.all()
+
+
 class Connection(api.Connection):
     """SqlAlchemy connection."""
 
@@ -100,7 +118,7 @@ class Connection(api.Connection):
             values['uuid'] = uuidutils.generate_uuid()
 
         if not values.get('description'):
-            values['description'] = ''
+            values['description'] = 'Default description.'
 
         accelerator = models.Accelerator()
         accelerator.update(values)
@@ -112,3 +130,54 @@ class Connection(api.Connection):
             except db_exc.DBDuplicateEntry:
                 raise exception.AcceleratorAlreadyExists(uuid=values['uuid'])
             return accelerator
+
+    def accelerator_get(self, context, uuid):
+        query = model_query(context, models.Accelerator).filter_by(uuid=uuid)
+        try:
+            return query.one()
+        except NoResultFound:
+            raise exception.AcceleratorNotFound(uuid=uuid)
+
+    def accelerator_list(self, context, limit, marker, sort_key, sort_dir,
+                         project_only):
+        query = model_query(context, models.Accelerator,
+                            project_only = project_only)
+
+        return _paginate_query(context, models.Accelerator,limit,marker,
+                               sort_key, sort_dir, query)
+
+    def accelerator_update(self, context, uuid, values):
+        if 'uuid' in values:
+            msg = _("Cannot overwrite UUID for existing Accelerator.")
+            raise  exception.InvalidParameterValue(err = msg)
+
+        try:
+            return  self._do_update_accelerator(context, uuid, values)
+        except db_exc.DBDuplicateEntry as e:
+            if 'name' in e.columns:
+                raise exception.DuplicateName(name=values['name'])
+
+
+    @oslo_db_api.retry_on_deadlock
+    def _do_update_accelerator(self, text, uuid, values):
+        with _session_for_write():
+            query = model_query(context,models.Accelerator)
+            query = add_identity_filter(query, uuid)
+            try:
+                ref = query.with_lockmode('update').one()
+            except NoResultFound:
+                raise  exception.AcceleratorNotFound(uuid=uuid)
+            ref.update(values)
+        return ref
+
+    @oslo_db_api.retry_on_deadlock
+    def accelerator_destory(self, context, uuid):
+        with _session_for_write():
+            query = model_query(context, models.Accelerator)
+            query = add_identity_filter(query, uuid)
+            count = query.delete()
+            if count == 0:
+                raise  exception.AcceleratorNotFound(uuid=uuid)
+
+
+

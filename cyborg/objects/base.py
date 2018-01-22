@@ -62,7 +62,7 @@ class CyborgObject(object_base.VersionedObject):
                     if hasattr(self, k))
 
     @staticmethod
-    def _from_db_object(context, obj, db_object):
+    def _from_db_object(obj, db_object):
         """Converts a database entity to a formal object.
 
         :param context: security context
@@ -77,6 +77,14 @@ class CyborgObject(object_base.VersionedObject):
         obj.obj_reset_changes()
         return obj
 
+    @classmethod
+    def _from_db_object_list(cls, context, db_objs):
+        """Converts a list of database entities to a list of formal objects."""
+
+        objs = []
+        for db_obj in db_objs:
+            objs.append(cls._from_db_object(cls(context), db_obj))
+        return  objs
 
 class CyborgObjectSerializer(object_base.VersionedObjectSerializer):
     # Base class to use for object hydration
