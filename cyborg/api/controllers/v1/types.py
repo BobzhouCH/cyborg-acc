@@ -85,6 +85,9 @@ class BooleanType(wtypes.UserType):
         return BooleanType.validate(value)
 
 
+uuid = UUIDType()
+jsontype = JsonType()
+boolean = BooleanType()
 
 class JsonPatchType(wtypes.Base):
     """A complex type that represents a single json-patch operation."""
@@ -156,6 +159,3 @@ class JsonPatchType(wtypes.Base):
             ret['value'] = patch.value
         return ret
 
-uuid = UUIDType()
-jsontype = JsonType()
-boolean = BooleanType()
