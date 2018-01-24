@@ -28,6 +28,9 @@ from cyborg import objects
 from cyborg.api.controllers.v1 import utils as api_utils
 from cyborg.common import exception
 
+from oslo_log import log as logging
+
+LOG = logging.getLogger(__name__)
 
 class Accelerator(base.APIBase):
     """API representation of a accelerator.
@@ -100,7 +103,7 @@ class AcceleratorPatchType(types.JsonPatchType):
 
 
 class AcceleratorsControllerBase(rest.RestController):
-    self._resource = None
+    _resource = None
     def _get_resource(self, uuid):
         self._resource = pecan.request.conductor_api.accelerator_get(pecan.request.context, uuid)
         return self._resource
@@ -209,6 +212,8 @@ class AcceleratorsController(AcceleratorsControllerBase):
         :param uuid: UUID of the accelerator."""
 
         rpc_acc = self._resource or self._get_resource(uuid)
+
+        LOG.info("test")
 
         if rpc_acc == None:
             status_code=http_client.NOT_FOUND
