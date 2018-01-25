@@ -25,3 +25,9 @@ class APIBase(wtypes.Base):
 
     updated_at = wsme.wsattr(datetime.datetime, readonly=True)
     """The time in UTC at which the object is updated"""
+
+    def as_dict(self):
+        """Render this object as a dict of its fields."""
+        return dict((k, getattr(self, k))
+                    for k in self.fields
+                    if hasattr(self, k) and getattr(self, k) != wsme.Unset)

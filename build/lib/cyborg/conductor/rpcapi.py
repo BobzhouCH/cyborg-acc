@@ -57,3 +57,28 @@ class ConductorAPI(object):
         cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
         #return cctxt.call(context, 'accelerator_create', values=acc_obj)
         return cctxt.call(context, 'accelerator_create', acc_obj=acc_obj)
+
+
+
+    def accelerator_update(self, context, acc_obj):
+        """Signal to conductor service to update an accelerator.
+
+        :param context: request context.
+        :param acc_obj: an accelerator object to update.
+        :returns: updated accelerator object.
+        """
+        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        return cctxt.call(context, 'accelerator_update', acc_obj=acc_obj)
+
+
+    def accelerator_delete(self, context, acc_obj):
+        """Signal to conductor service to delete an accelerator.
+
+        :param context: request context.
+        :param acc_obj: an accelerator to delete.
+        """
+        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt.call(context, 'accelerator_delete', acc_obj=acc_obj)
+
+
+

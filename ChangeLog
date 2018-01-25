@@ -1,6 +1,9 @@
 CHANGES
 =======
 
+* fixed small errors
+* fixed no jsontype error
+* add get one, get all and delete to the /accelerators api
 * change pike cyborg can be used in mitaka ThinkCloud
 * add api unit test
 * Pike doc clean up
