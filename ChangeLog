@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* add unit tests about accelerator list,delete,patch
 * fixed small errors
 * fixed no jsontype error
 * add get one, get all and delete to the /accelerators api

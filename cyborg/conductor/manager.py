@@ -56,7 +56,7 @@ class ConductorManager(object):
         acc_obj.save(context)
         return acc_obj
 
-    def accelerator_delete(self, contect, acc_obj):
+    def accelerator_delete(self, context, acc_obj):
         """Delete an accelerator.
 
         :param context: request context.

@@ -81,4 +81,13 @@ class ConductorAPI(object):
         cctxt.call(context, 'accelerator_delete', acc_obj=acc_obj)
 
 
+    def accelerator_get(self, context, acc_obj, uuid):
+        """Signal to conductor service to get an accelerator.
 
+        :param context: request context.
+        :param acc_obj: an accelerator object to get returned.
+        :param uuid: the uuid of an accelerator.
+        :returns: updated accelerator object.
+        """
+        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        return cctxt.call(context, 'accelerator_get', acc_obj=acc_obj, uuid=uuid)

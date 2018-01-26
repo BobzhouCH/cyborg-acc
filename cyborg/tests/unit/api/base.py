@@ -192,7 +192,7 @@ class BaseApiTest(base.DbTestCase):
         return self._request_json(path=full_path, params=params,
                                   expect_errors=expect_errors,
                                   headers=headers, extra_environ=extra_environ,
-                                  status=status, method="patch")
+                                  status=status, method="put")
 
     def delete(self, path, expect_errors=False, headers=None,
                extra_environ=None, status=None):

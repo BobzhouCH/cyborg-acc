@@ -49,14 +49,14 @@ class Accelerator(base.CyborgObject, object_base.VersionedObjectDictCompat):
     def create(self, context=None):
         """Create an Accelerator record in the DB."""
         values = self.obj_get_changes()
-        db_accelerator = self.dbapi.accelerator_create(context, values)
-        self._from_db_object(self, db_accelerator)
+        db_acc= self.dbapi.accelerator_create(context, values)
+        self._from_db_object(self, db_acc)
 
     @classmethod
     def get(cls, context, uuid):
         """Find a DB Accelerator and return an Ojb Accelerator."""
         db_acc = cls.dbapi.accelerator_get(context, uuid)
-        obj_acc = cls.from_db_object(cls(context), db_acc)
+        obj_acc = cls._from_db_object(cls(context), db_acc)
         return obj_acc
 
     @classmethod
@@ -64,7 +64,7 @@ class Accelerator(base.CyborgObject, object_base.VersionedObjectDictCompat):
         """Return a list of Accelerator objects."""
         db_accs = cls.dbapi.accelerator_list(context, limit, marker, sort_key,
                                              sort_dir, project_only)
-        obj_accs = cls.from_db_object_list(context, db_accs)
+        obj_accs = cls._from_db_object_list(context, db_accs)
         return obj_accs
 
     def save(self, context):

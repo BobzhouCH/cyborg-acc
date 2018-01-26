@@ -105,14 +105,14 @@ class AcceleratorPatchType(types.JsonPatchType):
 class AcceleratorsControllerBase(rest.RestController):
     _resource = None
     def _get_resource(self, uuid):
-        self._resource = pecan.request.conductor_api.accelerator_get(pecan.request.context, uuid)
+        self._resource = objects.Accelerator.get(pecan.request.context, uuid)
         return self._resource
 
 
 class AcceleratorsController(AcceleratorsControllerBase):
     """REST controller for Accelerators."""
 
-    @policy.authorize_wsgi("cyborg:accelerator", "create", False)
+    #@policy.authorize_wsgi("cyborg:accelerator", "create", False)
     @expose.expose(Accelerator, body=types.jsontype,
                    status_code=http_client.CREATED)
     def post(self, accelerator):
@@ -129,7 +129,7 @@ class AcceleratorsController(AcceleratorsControllerBase):
                                                  new_acc.uuid)
         return Accelerator.convert_with_links(new_acc)
 
-    @policy.authorize_wsgi("cyborg:accelerator", "get")
+    #@policy.authorize_wsgi("cyborg:accelerator", "get")
     @expose.expose(Accelerator, types.uuid)
     def get_one(self, uuid):
         """Retrieve information about the given uuid acceleratior.
@@ -173,7 +173,7 @@ class AcceleratorsController(AcceleratorsControllerBase):
 
         return AcceleratorCollection.convert_with_links(rpc_accs)
 
-    @policy.authorize_wsgi("cyborg:accelerator", "update")
+    #@policy.authorize_wsgi("cyborg:accelerator", "update")
     @expose.expose(Accelerator, types.uuid, body=[AcceleratorPatchType])
     def put(self, uuid, patch):
         """Update an accelerator's property.
@@ -205,7 +205,7 @@ class AcceleratorsController(AcceleratorsControllerBase):
         new_acc = pecan.request.conductor_api.accelerator_update(context, rpc_acc)
         return Accelerator.convert_with_links(new_acc)
 
-    @policy.authorize_wsgi("cyborg:accelerator", "delete")
+    #@policy.authorize_wsgi("cyborg:accelerator", "delete")
     @expose.expose(None, types.uuid, status_code=http_client.NO_CONTENT)
     def delete(self, uuid):
         """Delete an accelerator.

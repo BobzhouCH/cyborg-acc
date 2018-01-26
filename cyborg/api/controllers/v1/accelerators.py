@@ -105,7 +105,7 @@ class AcceleratorPatchType(types.JsonPatchType):
 class AcceleratorsControllerBase(rest.RestController):
     _resource = None
     def _get_resource(self, uuid):
-        self._resource = pecan.request.conductor_api.accelerator_get(pecan.request.context, uuid)
+        self._resource = objects.Accelerator.get(pecan.request.context, uuid)
         return self._resource
 
 
@@ -205,7 +205,7 @@ class AcceleratorsController(AcceleratorsControllerBase):
         new_acc = pecan.request.conductor_api.accelerator_update(context, rpc_acc)
         return Accelerator.convert_with_links(new_acc)
 
-    @policy.authorize_wsgi("cyborg:accelerator", "delete")
+    #@policy.authorize_wsgi("cyborg:accelerator", "delete")
     @expose.expose(None, types.uuid, status_code=http_client.NO_CONTENT)
     def delete(self, uuid):
         """Delete an accelerator.

@@ -80,5 +80,3 @@ class ConductorAPI(object):
         cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
         cctxt.call(context, 'accelerator_delete', acc_obj=acc_obj)
 
-
-

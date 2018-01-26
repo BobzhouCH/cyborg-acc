@@ -13,12 +13,14 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import datetime
 import mock
+from oslo_utils import timeutils
 from six.moves import http_client
 
 from cyborg.conductor import rpcapi
 from cyborg.tests.unit.api.controllers.v1 import base as v1_test
-from cyborg.tests.unit.db import db_utils
+from cyborg.tests.unit.db import utils as db_utils
 from cyborg.tests.unit.objects import utils as obj_utils
 
 def gen_post_body(**kw):
@@ -71,6 +73,7 @@ class TestList(v1_test.APITestV1):
     def setUp(self):
         super(TestList, self).setUp()
         self.accs = []
+        # first create 3 accelerator then list them.
         for i in range(3):
             acc = obj_utils.create_test_accelerator(self.context)
             self.accs.append(acc)
@@ -114,10 +117,10 @@ def _rpcapi_accelerator_update(context, obj_acc):
     return obj_acc
 
 
-class TestPatch(v1_test.APITestV1):
+class TestPut(v1_test.APITestV1):
 
     def setUp(self):
-        super(TestPatch, self).setUp()
+        super(TestPut, self).setUp()
         self.acc = obj_utils.create_test_accelerator(self.context)
         self.context.tenant = self.acc.project_id
         self.headers = self.gen_headers(self.context)
@@ -128,7 +131,7 @@ class TestPatch(v1_test.APITestV1):
         self.addCleanup(p.stop)
 
     @mock.patch.object(timeutils, 'utcnow')
-    def test_patch(self, mock_utcnow):
+    def test_put(self, mock_utcnow):
         test_time = datetime.datetime(2012, 12, 12, 12, 12)
         mock_utcnow.return_value = test_time
 
