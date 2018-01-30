@@ -80,3 +80,36 @@ class ConductorAPI(object):
         cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
         cctxt.call(context, 'accelerator_delete', acc_obj=acc_obj)
 
+
+
+    def port_create(self, context, port_obj):
+        """Signal to conductor service to create a port.
+
+        :param context: request context.
+        :param port_obj: a created (but not saved) port object.
+        :returns: created port object.
+        """
+        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        return cctxt.call(context, 'port_create', port_obj=port_obj)
+
+
+
+    def port_update(self, context, port_obj):
+        """Signal to conductor service to update a port.
+
+        :param context: request context.
+        :param port_obj: a port object to update.
+        :returns: updated port object.
+        """
+        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        return cctxt.call(context, 'port_update', port_obj=port_obj)
+
+
+    def port_delete(self, context, port_obj):
+        """Signal to conductor service to delete a port.
+
+        :param context: request context.
+        :param port_obj: a port to delete.
+        """
+        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt.call(context, 'port_delete', port_obj=port_obj)

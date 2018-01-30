@@ -22,6 +22,7 @@ from wsme import types as wtypes
 from cyborg.api.controllers import base
 from cyborg.api.controllers import link
 from cyborg.api.controllers.v1 import accelerators
+from cyborg.api.controllers.v1 import ports
 from cyborg.api import expose
 
 
@@ -34,6 +35,9 @@ class V1(base.APIBase):
     accelerator = [link.Link]
     """Links to the accelerator resource"""
 
+    port = [link.Link]
+    """Links to the port resource"""
+
     @staticmethod
     def convert():
         v1 = V1()
@@ -44,6 +48,12 @@ class V1(base.APIBase):
             link.Link.make_link('bookmark', pecan.request.public_url,
                                 'accelerator', '', bookmark=True)
             ]
+        v1.port = [
+            link.Link.make_link('self', pecan.request.public_url,
+                                'port', ''),
+            link.Link.make_link('bookmark', pecan.request.public_url,
+                                'port', '', bookmark=True)
+        ]
         return v1
 
 
@@ -51,6 +61,7 @@ class Controller(rest.RestController):
     """Version 1 API controller root"""
 
     accelerators = accelerators.AcceleratorsController()
+    ports = ports.PortsController()
 
     @expose.expose(V1)
     def get(self):

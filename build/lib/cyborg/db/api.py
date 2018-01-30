@@ -61,3 +61,24 @@ class Connection(object):
     @abc.abstractmethod
     def accelerator_destory(self, context, uuid):
         """Delete an accelerator."""
+
+    #ports
+    @abc.abstractmethod
+    def port_create(self, context, values):
+        """Create a new port."""
+
+    @abc.abstractmethod
+    def port_get(self, context, uuid):
+        """Get requested port."""
+
+    @abc.abstractmethod
+    def port_list(self, context, limit, marker, sort_key, sort_dir):
+        """Get requested list ports."""
+
+    @abc.abstractmethod
+    def port_update(self, context, uuid, values):
+        """Update a port."""
+
+    @abc.abstractmethod
+    def port_destory(self, context, uuid):
+        """Delete a port."""

@@ -112,7 +112,7 @@ class AcceleratorsControllerBase(rest.RestController):
 class AcceleratorsController(AcceleratorsControllerBase):
     """REST controller for Accelerators."""
 
-    #@policy.authorize_wsgi("cyborg:accelerator", "create", False)
+    @policy.authorize_wsgi("cyborg:accelerator", "create", False)
     @expose.expose(Accelerator, body=types.jsontype,
                    status_code=http_client.CREATED)
     def post(self, accelerator):
@@ -129,7 +129,7 @@ class AcceleratorsController(AcceleratorsControllerBase):
                                                  new_acc.uuid)
         return Accelerator.convert_with_links(new_acc)
 
-    #@policy.authorize_wsgi("cyborg:accelerator", "get")
+    @policy.authorize_wsgi("cyborg:accelerator", "get")
     @expose.expose(Accelerator, types.uuid)
     def get_one(self, uuid):
         """Retrieve information about the given uuid acceleratior.
@@ -173,7 +173,7 @@ class AcceleratorsController(AcceleratorsControllerBase):
 
         return AcceleratorCollection.convert_with_links(rpc_accs)
 
-    #@policy.authorize_wsgi("cyborg:accelerator", "update")
+    @policy.authorize_wsgi("cyborg:accelerator", "update")
     @expose.expose(Accelerator, types.uuid, body=[AcceleratorPatchType])
     def put(self, uuid, patch):
         """Update an accelerator's property.
@@ -185,8 +185,6 @@ class AcceleratorsController(AcceleratorsControllerBase):
             api_acc = Accelerator(**api_utils.apply_jsonpatch(rpc_acc.as_dict(), patch))
         except api_utils.JSONPATCH_EXCEPTIONS as e:
             raise  exception.PatchError(patch=patch, reason=e)
-
-
 
         #update only the fields thart have changed.
         for field in objects.Accelerator.fields:

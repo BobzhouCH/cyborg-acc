@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* fix some bugs about accelerator_get(
 * add unit tests about accelerator list,delete,patch
 * fixed small errors
 * fixed no jsontype error

@@ -186,8 +186,6 @@ class AcceleratorsController(AcceleratorsControllerBase):
         except api_utils.JSONPATCH_EXCEPTIONS as e:
             raise  exception.PatchError(patch=patch, reason=e)
 
-
-
         #update only the fields thart have changed.
         for field in objects.Accelerator.fields:
             try:

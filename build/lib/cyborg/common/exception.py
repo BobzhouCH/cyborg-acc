@@ -146,3 +146,13 @@ class Conflict(CyborgException):
 class DuplicateName(Conflict):
     _msg_fmt = _("An accelerator with name %(name)s already exists.")
 
+
+class PortAlreadyExists(CyborgException):
+    _msg_fmt = _("Port with uuid %(uuid)s already exists.")
+
+
+class PortNotFound(NotFound):
+    _msg_fmt = _("Port %(uuid)s could not be found.")
+
+class PortDuplicateName(Conflict):
+    _msg_fmt = _("An port with name %(name)s already exists.")

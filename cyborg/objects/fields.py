@@ -30,3 +30,8 @@ class StringField(object_fields.StringField):
 
 class DateTimeField(object_fields.DateTimeField):
     pass
+
+
+# added for port object
+class BooleanField(object_fields.BooleanField):
+    pass

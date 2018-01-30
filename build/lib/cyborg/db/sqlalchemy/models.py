@@ -19,7 +19,7 @@ from oslo_db import options as db_options
 from oslo_db.sqlalchemy import models
 import six.moves.urllib.parse as urlparse
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, Boolean
 from sqlalchemy import schema
 
 from cyborg.common import paths
@@ -72,3 +72,26 @@ class Accelerator(Base):
     vendor_id = Column(String(255), nullable=False)
     product_id = Column(String(255), nullable=False)
     remotable = Column(Integer, nullable=False)
+
+
+class Port(Base):
+    """Represents the ports which physical cards provided."""
+
+    __tablename__ = 'ports'
+    __table_args__ = (
+        schema.UniqueConstraint('uuid', name='uniq_ports0uuid'),
+        table_args()
+    )
+
+    id = Column(Integer, primary_key=True)
+    uuid = Column(String(36), nullable=False)
+    computer_id = Column(String(36), nullable=False)
+    phy_port_name = Column(String(255), nullable=False)
+    pci_slot = Column(String(255), nullable=False)
+    vendor_id = Column(String(255), nullable=False)
+    product_id = Column(String(255), nullable=False)
+    is_used = Column(Integer, nullable=False)
+    accelerator_id = Column(String(36), nullable=True)
+    bind_instance_id = Column(String(36), nullable=True)
+    bind_port_id = Column(String(36), nullable=True)
+    device_type = Column(String(255), nullable=True)

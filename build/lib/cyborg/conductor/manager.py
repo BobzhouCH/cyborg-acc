@@ -65,13 +65,29 @@ class ConductorManager(object):
         acc_obj.destory(context)
 
 
-    def accelerator_get(self, context, acc_obj, uuid):
-        """Get an accelerator.
+    def port_create(self, context, port_obj):
+        """Create a new port.
 
         :param context: request context.
-        :param acc_obj: the accelerator object.
-        :param uuid: the uuid of an accelerator users want to show.
-        :returns: created accelerator object.
+        :param port_obj: a changed (but not saved) port object.
+        :returns: created port object.
         """
-        acc_obj.get(context, uuid)
-        return acc_obj
+        port_obj.create(context)
+        return port_obj
+
+    def port_update(self, context, port_obj):
+        """Update a port.
+        :param context: request context.
+        :param port_obj: a port object to update.
+        :return: updated port objects."""
+
+        port_obj.save(context)
+        return port_obj
+
+    def port_delete(self, context, port_obj):
+        """Delete a port.
+
+        :param context: request context.
+        :param port_obj: a port object to delete."""
+
+        port_obj.destory(context)

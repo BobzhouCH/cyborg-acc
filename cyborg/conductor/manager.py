@@ -63,3 +63,31 @@ class ConductorManager(object):
         :param acc_obj: an accelerator object to delete."""
 
         acc_obj.destory(context)
+
+
+    def port_create(self, context, port_obj):
+        """Create a new port.
+
+        :param context: request context.
+        :param port_obj: a changed (but not saved) port object.
+        :returns: created port object.
+        """
+        port_obj.create(context)
+        return port_obj
+
+    def port_update(self, context, port_obj):
+        """Update a port.
+        :param context: request context.
+        :param port_obj: a port object to update.
+        :return: updated port objects."""
+
+        port_obj.save(context)
+        return port_obj
+
+    def port_delete(self, context, port_obj):
+        """Delete a port.
+
+        :param context: request context.
+        :param port_obj: a port object to delete."""
+
+        port_obj.destory(context)
