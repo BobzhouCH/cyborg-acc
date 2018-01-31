@@ -77,7 +77,11 @@ class ContextHook(hooks.PecanHook):
 
     def before(self, state):
         headers = state.request.headers
+<<<<<<< HEAD
 
+=======
+        '''
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
         creds = {
             'user_name': headers.get('X-User-Name'),
             'user': headers.get('X-User-Id'),
@@ -87,8 +91,22 @@ class ContextHook(hooks.PecanHook):
             'domain_name': headers.get('X-User-Domain-Name'),
             'auth_token': headers.get('X-Auth-Token'),
             'roles': headers.get('X-Roles', '').split(','),
+<<<<<<< HEAD
         }
 
+=======
+        }'''
+        
+        creds = {
+            'user': headers.get('X-User-Id'),
+            'tenant': headers.get('X-Project-Id'),
+            'domain': headers.get('X-User-Domain-Id',''),
+            'auth_token': headers.get('X-Auth-Token'),
+            'roles': headers.get('X-Roles', '').split(','),
+        }
+
+
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
         is_admin = policy.authorize('is_admin', creds, creds)
         state.request.context = context.RequestContext(
             is_admin=is_admin, **creds)

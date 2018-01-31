@@ -1,4 +1,17 @@
+<<<<<<< HEAD
 # leave this file empty to use default policy defined in code.
 {
 
+=======
+{
+    "context_is_admin": "role:admin",
+    "admin_or_owner":  "is_admin:True or project_id:%(project_id)s",
+    "default": "rule:admin_or_owner",
+
+    "admin_api": "is_admin:True",
+    "cyborg:accelerator:get": "rule:admin_or_owner",
+    "cyborg:accelerator:create": "rule:admin_or_owner",
+    "cyborg:accelerator:delete": "rule:admin_or_owner",
+    "cyborg:accelerator:update": "rule:admin_or_owner"
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 }

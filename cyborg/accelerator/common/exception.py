@@ -17,6 +17,10 @@
 import collections
 
 from oslo_log import log as logging
+<<<<<<< HEAD
+=======
+from oslo_serialization import jsonutils
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 import six
 from six.moves import http_client
 
@@ -36,7 +40,11 @@ def _ensure_exception_kwargs_serializable(exc_class_name, kwargs):
         constructor.
     :returns: a dictionary of serializable keyword arguments.
     """
+<<<<<<< HEAD
     serializers = [(json.dumps, _('when converting to JSON')),
+=======
+    serializers = [(jsonutils.dumps, _('when converting to JSON')),
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
                    (six.text_type, _('when converting to string'))]
     exceptions = collections.defaultdict(list)
     serializable_kwargs = {}

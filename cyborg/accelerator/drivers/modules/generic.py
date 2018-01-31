@@ -23,7 +23,11 @@ from oslo_log import log as logging
 
 LOG = logging.getLogger(__name__)
 
+<<<<<<< HEAD
 # NOTE (crushil): REQUIRED_PROPERTIES needs to be filled out.
+=======
+# TODO(crushil): REQUIRED_PROPERTIES needs to be filled out.
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 REQUIRED_PROPERTIES = {}
 COMMON_PROPERTIES = REQUIRED_PROPERTIES
 

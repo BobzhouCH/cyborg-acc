@@ -38,6 +38,11 @@ default_policies = [
     # Legacy setting, don't remove. Likely to be overridden by operators who
     # forget to update their policy.json configuration file.
     # This gets rolled into the new "is_admin" rule below.
+<<<<<<< HEAD
+=======
+    # comment by bob. There is no RuleDefault class in policy of mitaka release.
+    ''' 
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
     policy.RuleDefault('admin_api',
                        'role:admin or role:administrator',
                        description='Legacy rule for cloud admin access'),
@@ -66,6 +71,10 @@ default_policies = [
     policy.RuleDefault('default',
                        'rule:admin_or_owner',
                        description='Default API access rule'),
+<<<<<<< HEAD
+=======
+    '''
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 ]
 
 # NOTE: to follow policy-in-code spec, we define defaults for
@@ -74,6 +83,11 @@ default_policies = [
 #       depend on their existence throughout the code.
 
 accelerator_policies = [
+<<<<<<< HEAD
+=======
+    # comment by bob. There is no RuleDefault class in policy of mitaka release.
+    '''
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
     policy.RuleDefault('cyborg:accelerator:get',
                        'rule:default',
                        description='Retrieve accelerator records'),
@@ -86,6 +100,11 @@ accelerator_policies = [
     policy.RuleDefault('cyborg:accelerator:update',
                        'rule:default',
                        description='Update accelerator records'),
+<<<<<<< HEAD
+=======
+   '''
+    
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 ]
 
 
@@ -121,7 +140,13 @@ def init_enforcer(policy_file=None, rules=None,
                                 rules=rules,
                                 default_rule=default_rule,
                                 use_conf=use_conf)
+<<<<<<< HEAD
     _ENFORCER.register_defaults(list_policies())
+=======
+    
+    # no register_defaults method. by bob
+    #_ENFORCER.register_defaults(list_policies())
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 
 
 def get_enforcer():
@@ -148,7 +173,13 @@ def authorize(rule, target, creds, do_raise=False, *args, **kwargs):
     """
     enforcer = get_enforcer()
     try:
+<<<<<<< HEAD
         return enforcer.authorize(rule, target, creds, do_raise=do_raise,
+=======
+        # no authorize. comment by bob
+        #return enforcer.authorize(rule, target, creds, do_raise=do_raise,
+        return enforcer.enforce(rule, target, creds, do_raise=do_raise,
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
                                   *args, **kwargs)
     except policy.PolicyNotAuthorized:
         raise exception.HTTPForbidden(resource=rule)

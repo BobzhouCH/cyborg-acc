@@ -5,7 +5,10 @@
 # https://docs.openstack.org/devstack/latest/plugins.html
 
 echo_summary "cyborg devstack plugin.sh called: $1/$2"
+<<<<<<< HEAD
 source $DEST/cyborg/devstack/lib/cyborg
+=======
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 
 if is_service_enabled cyborg-api cyborg-cond; then
     if [[ "$1" == "stack" ]]; then
@@ -19,6 +22,10 @@ if is_service_enabled cyborg-api cyborg-cond; then
                 install_libvirt
             fi
             install_cyborg
+<<<<<<< HEAD
+=======
+            cleanup_cyborg_config_files
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 
         elif [[ "$2" == "post-config" ]]; then
         # stack/post-config - Called after the layer 1 and 2 services have been
@@ -28,6 +35,13 @@ if is_service_enabled cyborg-api cyborg-cond; then
             echo_summary "Configuring Cyborg"
             configure_cyborg
 
+<<<<<<< HEAD
+=======
+            if is_service_enabled key; then
+                create_cyborg_accounts
+            fi
+
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
         elif [[ "$2" == "extra" ]]; then
         # stack/extra - Called near the end after layer 1 and 2 services have
         # been started.

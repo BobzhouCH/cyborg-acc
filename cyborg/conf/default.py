@@ -31,7 +31,12 @@ exc_log_opts = [
 ]
 
 service_opts = [
+<<<<<<< HEAD
     cfg.HostAddressOpt('host',
+=======
+    #cfg.HostAddressOpt('host',
+    cfg.StrOpt('host',
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
                        default=socket.getfqdn(),
                        sample_default='localhost',
                        help=_('Name of this node. This can be an opaque '

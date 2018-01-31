@@ -35,7 +35,12 @@ EXTRA_EXMODS = []
 def init(conf):
     global TRANSPORT, NOTIFICATION_TRANSPORT, NOTIFIER
     exmods = get_allowed_exmods()
+<<<<<<< HEAD
     TRANSPORT = messaging.get_rpc_transport(conf,
+=======
+    #TRANSPORT = messaging.get_rpc_transport(conf,
+    TRANSPORT = messaging.get_transport(conf,
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
                                             allowed_remote_exmods=exmods)
     NOTIFICATION_TRANSPORT = messaging.get_notification_transport(
         conf,
@@ -104,14 +109,24 @@ def get_client(target, version_cap=None, serializer=None):
 
 def get_server(target, endpoints, serializer=None):
     assert TRANSPORT is not None
+<<<<<<< HEAD
     access_policy = dispatcher.DefaultRPCAccessPolicy
+=======
+    # comment by bob
+    #access_policy = dispatcher.DefaultRPCAccessPolicy
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
     serializer = RequestContextSerializer(serializer)
     return messaging.get_rpc_server(TRANSPORT,
                                     target,
                                     endpoints,
                                     executor='eventlet',
+<<<<<<< HEAD
                                     serializer=serializer,
                                     access_policy=access_policy)
+=======
+                                    serializer=serializer)
+                                    #access_policy=access_policy)
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 
 
 def get_notifier(service=None, host=None, publisher_id=None):
