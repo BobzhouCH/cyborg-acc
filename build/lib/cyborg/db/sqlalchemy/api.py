@@ -21,7 +21,6 @@ from oslo_db import api as oslo_db_api
 from oslo_db import exception as db_exc
 from oslo_db.sqlalchemy import enginefacade
 from oslo_db.sqlalchemy import utils as sqlalchemyutils
-from oslo_log import log
 from oslo_utils import strutils
 from oslo_utils import uuidutils
 from sqlalchemy.orm.exc import NoResultFound
@@ -29,11 +28,9 @@ from sqlalchemy.orm.exc import NoResultFound
 from cyborg.common import exception
 from cyborg.db.sqlalchemy import models
 from cyborg.common.i18n import _
-
+from cyborg.db import api
 
 _CONTEXT = threading.local()
-LOG = log.getLogger(__name__)
-
 
 def get_backend():
     """The backend is this module itself."""
@@ -91,7 +88,6 @@ def add_identity_filter(query, value):
         raise exception.InvalidIdentity(identity=value)
 
 
-<<<<<<< HEAD
 def _paginate_query(context, model, limit, marker, sort_key, sort_dir, query):
     sort_keys = ['id']
     if sort_key and sort_key not in sort_keys:
@@ -107,7 +103,7 @@ def _paginate_query(context, model, limit, marker, sort_key, sort_dir, query):
     return query.all()
 
 
-class Connection(oslo_db_api.Connection):
+class Connection(api.Connection):
     """SqlAlchemy connection."""
 
     def __init__(self):
@@ -116,9 +112,6 @@ class Connection(oslo_db_api.Connection):
     def accelerator_create(self, context, values):
         if not values.get('uuid'):
             values['uuid'] = uuidutils.generate_uuid()
-
-        if not values.get('description'):
-            values['description'] = 'Default description.'
 
         accelerator = models.Accelerator()
         accelerator.update(values)
