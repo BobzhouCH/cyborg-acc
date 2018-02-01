@@ -1,12 +1,16 @@
 CHANGES
 =======
 
-* fix some bugs about accelerator_get(
+* resolve conflicts between remote mitaka branch and local gjh branch
+* add port api
+* fix some bugs about accelerator_get()
 * add unit tests about accelerator list,delete,patch
 * fixed small errors
 * fixed no jsontype error
 * add get one, get all and delete to the /accelerators api
 * change pike cyborg can be used in mitaka ThinkCloud
+* back port for openstack mitaka release integration
+* base version of pike version
 * add api unit test
 * Pike doc clean up
 * Update and replace http with https for doc links in cyborg

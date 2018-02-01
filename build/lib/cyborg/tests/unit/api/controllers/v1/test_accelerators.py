@@ -67,7 +67,6 @@ class TestPost(v1_test.APITestV1):
 
 
 
-
 class TestList(v1_test.APITestV1):
 
     def setUp(self):
@@ -177,6 +176,3 @@ class TestDelete(v1_test.APITestV1):
                                headers=self.headers)
         self.assertEqual(http_client.NO_CONTENT, response.status_code)
         self.mock_delete.assert_called_once_with(mock.ANY, mock.ANY)
-
-
-

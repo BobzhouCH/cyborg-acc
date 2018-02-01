@@ -24,10 +24,7 @@ from oslotest import base
 import pecan
 
 from cyborg.common import config as cyborg_config
-<<<<<<< HEAD
 from cyborg.tests.unit import policy_fixture
-=======
->>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 
 
 CONF = cfg.CONF
@@ -47,15 +44,8 @@ class TestCase(base.BaseTestCase):
 
         self._set_config()
 
-<<<<<<< HEAD
         self._set_config()
         self.policy = self.useFixture(policy_fixture.PolicyFixture())
-=======
-        def reset_pecan():
-            pecan.set_config({}, overwrite=True)
-
-        self.addCleanup(reset_pecan)
->>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a
 
     def _set_config(self):
         self.cfg_fixture = self.useFixture(config_fixture.Config(cfg.CONF))

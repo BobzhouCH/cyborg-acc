@@ -59,7 +59,6 @@ class ConductorAPI(object):
         return cctxt.call(context, 'accelerator_create', acc_obj=acc_obj)
 
 
-
     def accelerator_update(self, context, acc_obj):
         """Signal to conductor service to update an accelerator.
 
