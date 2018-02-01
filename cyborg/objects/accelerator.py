@@ -13,14 +13,12 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from oslo_log import log as logging
 from oslo_versionedobjects import base as object_base
 
 from cyborg.db import api as dbapi
 from cyborg.objects import base
 from cyborg.objects import fields as object_fields
 
-LOG = logging.getLogger(__name__)
 
 @base.CyborgObjectRegistry.register
 class Accelerator(base.CyborgObject, object_base.VersionedObjectDictCompat):

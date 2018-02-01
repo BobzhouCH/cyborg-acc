@@ -18,11 +18,11 @@ import json
 from oslo_utils import uuidutils
 from wsme import types as wtypes
 import wsme
-from cyborg.common import exception
 
 import inspect
 from oslo_utils import strutils
 from cyborg.common.i18n import _
+from cyborg.common import exception
 
 
 class UUIDType(wtypes.UserType):
@@ -62,7 +62,6 @@ class JsonType(wtypes.UserType):
     @staticmethod
     def frombasetype(value):
         return JsonType.validate(value)
-
 
 class BooleanType(wtypes.UserType):
     """A simple boolean type."""
@@ -158,4 +157,3 @@ class JsonPatchType(wtypes.Base):
         if patch.value is not wsme.Unset:
             ret['value'] = patch.value
         return ret
-

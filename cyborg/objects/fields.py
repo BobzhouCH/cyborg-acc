@@ -30,8 +30,11 @@ class StringField(object_fields.StringField):
 
 class DateTimeField(object_fields.DateTimeField):
     pass
+<<<<<<< HEAD
 
 
 # added for port object
 class BooleanField(object_fields.BooleanField):
     pass
+=======
+>>>>>>> 8f919f6ea81c906f84a06047e0eb262adaaa235a

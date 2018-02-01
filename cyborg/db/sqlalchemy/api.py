@@ -27,7 +27,6 @@ from oslo_utils import uuidutils
 from sqlalchemy.orm.exc import NoResultFound
 
 from cyborg.common import exception
-from cyborg.db import api
 from cyborg.db.sqlalchemy import models
 from cyborg.common.i18n import _
 
@@ -92,6 +91,7 @@ def add_identity_filter(query, value):
         raise exception.InvalidIdentity(identity=value)
 
 
+<<<<<<< HEAD
 def _paginate_query(context, model, limit, marker, sort_key, sort_dir, query):
     sort_keys = ['id']
     if sort_key and sort_key not in sort_keys:
@@ -107,7 +107,7 @@ def _paginate_query(context, model, limit, marker, sort_key, sort_dir, query):
     return query.all()
 
 
-class Connection(api.Connection):
+class Connection(oslo_db_api.Connection):
     """SqlAlchemy connection."""
 
     def __init__(self):
