@@ -1,4 +1,4 @@
-# Copyright 2017 Huawei Technologies Co.,LTD.
+# Copyright 2018 Lenovo Research Co.,LTD.
 # All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -23,6 +23,7 @@ from cyborg.api.controllers import base
 from cyborg.api.controllers import link
 from cyborg.api.controllers.v1 import types
 from cyborg.api import expose
+from pecan import expose as pexpose
 from cyborg.common import policy
 from cyborg import objects
 from cyborg.api.controllers.v1 import utils as api_utils
@@ -108,8 +109,60 @@ class PortsControllerBase(rest.RestController):
         return self._resource
 
 
+class BindPortController(PortsControllerBase):
+    # url path: /v1/ports/bind/{uuid}
+
+    @expose.expose(Port, body=types.jsontype)
+    def put(self, uuid, patch):
+        """bind a existing port to a logical neutron port.
+        : param uuid: UUID of a port.
+        : param patch: a json type to apply to this port.
+        """
+        context = pecan.request.context
+        obj_port = self._resource or self._get_resource(uuid)
+        # object with user modified properties.
+        mod_port = objects.Port(context, **patch)
+
+        # update fields used in bind.
+        obj_port["accelerator_id"] = mod_port["accelerator_id"]
+        obj_port["bind_instance_id"] = mod_port["bind_instance_id"]
+        obj_port["bind_port_id"] = mod_port["bind_port_id"]
+        obj_port["is_used"] = mod_port["is_used"]
+        obj_port["device_type"] = mod_port["device_type"]
+
+        LOG.debug(obj_port)
+        new_port = pecan.request.conductor_api.port_update(context, obj_port)
+        return Port.convert_with_links(new_port)
+
+class UnBindPortController(PortsControllerBase):
+    # url path: /v1/ports/bind/{uuid}
+
+    @expose.expose(Port, body=types.jsontype)
+    def put(self, uuid):
+        """unbind a existing port, set some areas to null in DB.
+        : param uuid: UUID of a port.
+        : param patch: a json type to apply to this port.
+        """
+        context = pecan.request.context
+        obj_port = self._resource or self._get_resource(uuid)
+
+        # update fields used in unbind.
+        obj_port["accelerator_id"] = None
+        obj_port["bind_instance_id"] = None
+        obj_port["bind_port_id"] = None
+        obj_port["is_used"] = 0
+        obj_port["device_type"] = None
+
+        new_port = pecan.request.conductor_api.port_update(context, obj_port)
+        return Port.convert_with_links(new_port)
+
+
 class PortsController(PortsControllerBase):
-    """REST controller for Ports."""
+    """REST controller for Ports.
+       url path: /v2.0/ports/
+    """
+    bind = BindPortController()
+    unbind = UnBindPortController()
 
     @policy.authorize_wsgi("cyborg:port", "create", False)
     @expose.expose(Port, body=types.jsontype,
@@ -139,7 +192,6 @@ class PortsController(PortsControllerBase):
             return pecan.abort(404, detail='The uuid Not Found.')
         else:
             return  Port.convert_with_links(rpc_port)
-
 
     @expose.expose(PortCollection, int, types.uuid, wtypes.text,
                    wtypes.text, types.boolean)
@@ -179,7 +231,7 @@ class PortsController(PortsControllerBase):
         except api_utils.JSONPATCH_EXCEPTIONS as e:
             raise  exception.PatchError(patch=patch, reason=e)
 
-        #update only the fields thart have changed.
+        #update only the fields that have changed.
         for field in objects.Port.fields:
             try:
                 patch_val = getattr(api_port, field)
@@ -196,6 +248,7 @@ class PortsController(PortsControllerBase):
         new_port = pecan.request.conductor_api.port_update(context, obj_port)
         return Port.convert_with_links(new_port)
 
+
     #@policy.authorize_wsgi("cyborg:port", "delete")
     @expose.expose(None, types.uuid, status_code=http_client.NO_CONTENT)
     def delete(self, uuid):
@@ -207,4 +260,10 @@ class PortsController(PortsControllerBase):
             status_code = http_client.NOT_FOUND
         context = pecan.request.context
         pecan.request.conductor_api.port_delete(context, rpc_port)
+
+
+
+
+
+
 

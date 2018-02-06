@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* Fix conflict
+* fix errors when doing conflicts solving
 * resolve conflicts between remote mitaka branch and local gjh branch
 * add port api
 * fix some bugs about accelerator_get()

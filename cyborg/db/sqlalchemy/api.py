@@ -216,7 +216,7 @@ class Connection(api.Connection):
                 raise exception.PortDuplicateName(name=values['name'])
 
     @oslo_db_api.retry_on_deadlock
-    def _do_update_port(self, text, uuid, values):
+    def _do_update_port(self, context, uuid, values):
         with _session_for_write():
             query = model_query(context, models.Port)
             query = add_identity_filter(query, uuid)
