@@ -59,6 +59,11 @@ class RPCService(service.Service):
             periodic_interval_max=CONF.periodic_interval,
             context=admin_context)
 
+        self.tg.add_dynamic_timer(
+            self.manager.update_available_resource,
+            periodic_interval_max=CONF.periodic_interval,
+            context=admin_context)
+
         LOG.info('Created RPC server for service %(service)s on host '
                  '%(host)s.',
                  {'service': self.topic, 'host': self.host})

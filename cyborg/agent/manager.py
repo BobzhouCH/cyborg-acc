@@ -13,7 +13,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+
 import oslo_messaging as messaging
+
+from cyborg.accelerator.drivers.modules import netronome
 
 from cyborg.conf import CONF
 
@@ -35,3 +38,7 @@ class AgentManager(object):
     def hardware_list(self, context, values):
         """List installed hardware."""
         pass
+
+    def update_available_resource(self, context):
+        driver = netronome.NETRONOMEDRIVER()
+        driver.get_available_resource()
