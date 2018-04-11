@@ -3,6 +3,9 @@ Cyborg Netronome driver modules implementation.
 """
 import os
 import json
+import socket
+
+
 
 from cyborg.accelerator.drivers.modules import generic
 
@@ -13,13 +16,16 @@ LOG = logging.getLogger(__name__)
 class NETRONOMEDRIVER(generic.GENERICDRIVER):
     def __init__(self, *args, **kwargs):
         super(NETRONOMEDRIVER, self).__init__(*args, **kwargs)
+
         self.port_name_prefix = 'sdn_v0.'
         self.port_index_max = 59
 
     def get_available_resource(self):
         port_resource = self._read_config()
-        LOG.info('Discover netronome port %s '% (port_resource))
+        for port in port_resource:
+            port["computer_node"] = socket.gethostname()
 
+        LOG.info('Discover netronome port %s '% (port_resource))
         return port_resource
 
     def _ovs_port_check(self, port_name):
@@ -64,3 +70,4 @@ class NETRONOMEDRIVER(generic.GENERICDRIVER):
             port["vender_id"] = "19ee"
 
             port_list.append(port)
+

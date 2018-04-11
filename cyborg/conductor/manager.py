@@ -15,8 +15,14 @@
 
 import oslo_messaging as messaging
 
+from cyborg import objects
 from cyborg.conf import CONF
 
+
+from oslo_log import log as logging
+
+
+LOG = logging.getLogger(__name__)
 
 class ConductorManager(object):
     """Cyborg Conductor manager main class."""
@@ -75,6 +81,27 @@ class ConductorManager(object):
         port_obj.create(context)
         return port_obj
 
+    def port_bulk_create(self, context, port_list):
+        """Create a new port.
+
+        :param context: request context.
+        :param port_list: port list need to be create and save.
+        :returns: request result.
+        """
+        try:
+            for port in list(port_list):
+                port_obj = objects.Port(context, **port)
+                port = self.check_port_exist(context, port_obj)
+                if not port:
+                    port_obj.create(context)
+
+            LOG.info('Update port resource %s ' % (port_list))
+            return True
+        except Exception as e:
+            LOG.error("Failed to port bulk create with error: %s" % (e))
+            LOG.error("Failed to port bulk create: %s" % (port_list))
+
+
     def port_update(self, context, port_obj):
         """Update a port.
         :param context: request context.
@@ -91,3 +118,13 @@ class ConductorManager(object):
         :param port_obj: a port object to delete."""
 
         port_obj.destory(context)
+
+    def check_port_exist(self, context, port_obj):
+        """Delete a port.
+        
+        :param port_obj: a port object to delete.
+        :returns: True/False exist or not exist.
+        """
+        return objects.Port.get(context=context, phy_port_name=port_obj.phy_port_name, \
+                           pci_slot=port_obj.pci_slot, computer_node=port_obj.computer_node)
+

@@ -36,7 +36,7 @@ def upgrade():
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('uuid', sa.String(length=36), nullable=False),
-        sa.Column('computer_id', sa.String(length=36), nullable=False),
+        sa.Column('computer_node', sa.String(length=36), nullable=False),
         sa.Column('phy_port_name', sa.String(length=255), nullable=False),  #physical eth port
         sa.Column('pci_slot', sa.String(length=255), nullable=False),
         sa.Column('product_id', sa.Text(), nullable=False),

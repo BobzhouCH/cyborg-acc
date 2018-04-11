@@ -31,7 +31,7 @@ class Port(base.CyborgObject, object_base.VersionedObjectDictCompat):
 
     fields = {
         'uuid': object_fields.UUIDField(nullable=False),
-        'computer_id': object_fields.UUIDField(nullable=False),
+        'computer_node': object_fields.UUIDField(nullable=False),
         'phy_port_name': object_fields.StringField(nullable=True),
         'pci_slot': object_fields.StringField(nullable=True),
         'product_id': object_fields.StringField(nullable=True),
@@ -59,6 +59,17 @@ class Port(base.CyborgObject, object_base.VersionedObjectDictCompat):
         db_port = cls.dbapi.port_get(context, uuid)
         obj_port = cls._from_db_object(cls(context), db_port)
         return obj_port
+
+    @classmethod
+    def get(cls, context, phy_port_name, pci_slot, computer_node):
+        """Return a list of Port objects."""
+        db_port = cls.dbapi.port_get(context, phy_port_name=phy_port_name,
+                                     pci_slot=pci_slot, computer_node=computer_node)
+        if db_port:
+            obj_port = cls._from_db_object(cls(context), db_port)
+            return obj_port
+        else:
+            return None
 
     @classmethod
     def list(cls, context, limit, marker, sort_key, sort_dir):
