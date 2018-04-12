@@ -38,38 +38,58 @@ class Accelerator(base.APIBase):
     """
 
     uuid = types.uuid
+    """The UUID of the accelerator"""
+
     name = wtypes.text
+    """The name of the accelerator"""
+
     description = wtypes.text
+    """The description of the accelerator"""
+
     project_id = types.uuid
+    """The project UUID of the accelerator"""
+
     user_id = types.uuid
+    """The user UUID of the accelerator"""
+
     device_type = wtypes.text
+    """The device type of the accelerator"""
+
     acc_type = wtypes.text
+    """The type of the accelerator"""
+
     acc_capability = wtypes.text
+    """The capability of the accelerator"""
+
     vendor_id = wtypes.text
+    """The vendor id of the accelerator"""
+
     product_id = wtypes.text
+    """The product id of the accelerator"""
+
     remotable = wtypes.IntegerType()
+    """Whether the accelerator is remotable"""
 
     links = wsme.wsattr([link.Link], readonly=True)
     """A list containing a self link"""
 
     def __init__(self, **kwargs):
+        super(Accelerator, self).__init__(**kwargs)
         self.fields = []
         for field in objects.Accelerator.fields:
             self.fields.append(field)
             setattr(self, field, kwargs.get(field, wtypes.Unset))
 
     @classmethod
-    def convert_with_links(cls, acc_obj):
-        accelerator = Accelerator(**acc_obj.as_dict())
+    def convert_with_links(cls, obj_acc):
+        api_acc = cls(**obj_acc.as_dict())
         url = pecan.request.public_url
-        accelerator.links = [
-            link.Link.make_link('self', url, 'accelerators',
-                                accelerator.uuid),
-            link.Link.make_link('bookmark', url, 'accelerators',
-                                accelerator.uuid, bookmark=True)
+        api_acc.links = [
+            link.Link.make_link('self', url, 'accelerators', api_acc.uuid),
+            link.Link.make_link('bookmark', url, 'accelerators', api_acc.uuid,
+                                bookmark=True)
             ]
-
-        return accelerator
+        return api_acc
 
 
 class AcceleratorCollection(base.APIBase):
@@ -79,10 +99,10 @@ class AcceleratorCollection(base.APIBase):
     """A list containing accelerator objects"""
 
     @classmethod
-    def convert_with_links(cls, rpc_accs):
+    def convert_with_links(cls, obj_accs):
         collection = cls()
         collection.accelerators = [Accelerator.convert_with_links(obj_acc)
-                                   for obj_acc in rpc_accs]
+                                   for obj_acc in obj_accs]
         return collection
 
 
@@ -99,10 +119,9 @@ class AcceleratorPatchType(types.JsonPatchType):
 
 
 class AcceleratorsControllerBase(rest.RestController):
+
     _resource = None
 
-
-class AcceleratorsControllerBase(rest.RestController):
     def _get_resource(self, uuid):
         self._resource = objects.Accelerator.get(pecan.request.context, uuid)
         return self._resource
@@ -114,105 +133,101 @@ class AcceleratorsController(AcceleratorsControllerBase):
     @policy.authorize_wsgi("cyborg:accelerator", "create", False)
     @expose.expose(Accelerator, body=types.jsontype,
                    status_code=http_client.CREATED)
-    def post(self, accelerator):
+    def post(self, acc):
         """Create a new accelerator.
 
-        :param accelerator: an accelerator within the request body.
+        :param acc: an accelerator within the request body.
         """
         context = pecan.request.context
-        rpc_acc = objects.Accelerator(context, **accelerator)
+        obj_acc = objects.Accelerator(context, **acc)
         new_acc = pecan.request.conductor_api.accelerator_create(
-            context, rpc_acc)
+            context, obj_acc )
         # Set the HTTP Location Header
-        pecan.response.location = link.build_url('accelerators',
-                                                 new_acc.uuid)
+        pecan.response.location = link.build_url('accelerators', new_acc.uuid)
         return Accelerator.convert_with_links(new_acc)
 
     @policy.authorize_wsgi("cyborg:accelerator", "get")
     @expose.expose(Accelerator, types.uuid)
     def get_one(self, uuid):
-        """Retrieve information about the given uuid acceleratior.
-        : param uuid: UUID of an accelerator.
+        """Retrieve information about the given accelerator.
+
+        :param uuid: UUID of an accelerator.
         """
-
-        # add if the accelerator does not exist a '404 Not Found' must be returned
-        rpc_acc = self._get_resource(uuid)
-        if rpc_acc == None:
-            return pecan.abort(404, detail='The uuid Not Found.')
-        else:
-            return  Accelerator.convert_with_links(rpc_acc)
-
+        obj_acc = self._resource or self._get_resource(uuid)
+        return Accelerator.convert_with_links(obj_acc)
 
     @expose.expose(AcceleratorCollection, int, types.uuid, wtypes.text,
                    wtypes.text, types.boolean)
-    def get_all(self, limit = None, marker = None, sort_key='id',
-                sort_dir='asc', all_tenants=None):
+    def get_all(self, limit=None, marker=None, sort_key='id', sort_dir='asc',
+                all_tenants=None):
         """Retrieve a list of accelerators.
-        : param limit: Optional, to determine the maximum number of
-        accelerators to return.
-        : param marker: Optional, to display a list of accelerators after
-        this marker.
-        : param sort_dir: Optional, to return a list of accelerators with this
-        sort direction.
-        : param all_tenants: Optional, allows administrators to see the
-        accelerators owned by all tenants, otherwise only the accelerators
-        associated with the calling tenant are included in the response."""
 
+        :param limit: Optional, to determinate the maximum number of
+                      accelerators to return.
+        :param marker: Optional, to display a list of accelerators after this
+                       marker.
+        :param sort_key: Optional, to sort the returned accelerators list by
+                         this specified key value.
+        :param sort_dir: Optional, to return a list of accelerators with this
+                         sort direction.
+        :param all_tenants: Optional, allows administrators to see the
+                            accelerators owned by all tenants, otherwise only
+                            the accelerators associated with the calling
+                            tenant are included in the response.
+        """
         context = pecan.request.context
         project_only = True
         if context.is_admin and all_tenants:
             project_only = False
 
-        marker_obj = None;
+        marker_obj = None
         if marker:
             marker_obj = objects.Accelerator.get(context, marker)
 
-        rpc_accs = objects.Accelerator.list(
-                context, limit, marker_obj, sort_key, sort_dir, project_only)
-
-        return AcceleratorCollection.convert_with_links(rpc_accs)
+        obj_accs = objects.Accelerator.list(context, limit, marker_obj,
+                                            sort_key, sort_dir, project_only)
+        return AcceleratorCollection.convert_with_links(obj_accs)
 
     @policy.authorize_wsgi("cyborg:accelerator", "update")
     @expose.expose(Accelerator, types.uuid, body=[AcceleratorPatchType])
-    def put(self, uuid, patch):
-        """Update an accelerator's property.
-        : param uuid: UUID of an accelerator.
-        : param patch: a json PATCH document to apply to this accelerator.
-        """
-        rpc_acc = self._resource or self._get_resource(uuid)
-        try:
-            api_acc = Accelerator(**api_utils.apply_jsonpatch(rpc_acc.as_dict(), patch))
-        except api_utils.JSONPATCH_EXCEPTIONS as e:
-            raise  exception.PatchError(patch=patch, reason=e)
+    def patch(self, uuid, patch):
+        """Update an accelerator.
 
-        #update only the fields thart have changed.
+        :param uuid: UUID of an accelerator.
+        :param patch: a json PATCH document to apply to this accelerator.
+        """
+        obj_acc = self._resource or self._get_resource(uuid)
+        try:
+            api_acc = Accelerator(
+                **api_utils.apply_jsonpatch(obj_acc.as_dict(), patch))
+        except api_utils.JSONPATCH_EXCEPTIONS as e:
+            raise exception.PatchError(patch=patch, reason=e)
+
+        # Update only the fields that have changed
         for field in objects.Accelerator.fields:
             try:
                 patch_val = getattr(api_acc, field)
             except AttributeError:
-            # Ignore fields that aren't exposed in the API
+                # Ignore fields that aren't exposed in the API
                 continue
-
             if patch_val == wtypes.Unset:
                 patch_val = None
-            if rpc_acc[field] != patch_val:
-                rpc_acc[field] = patch_val
+            if obj_acc[field] != patch_val:
+                obj_acc[field] = patch_val
 
         context = pecan.request.context
-        new_acc = pecan.request.conductor_api.accelerator_update(context, rpc_acc)
+        new_acc = pecan.request.conductor_api.accelerator_update(context,
+                                                                 obj_acc)
         return Accelerator.convert_with_links(new_acc)
 
-    #@policy.authorize_wsgi("cyborg:accelerator", "delete")
+    @policy.authorize_wsgi("cyborg:accelerator", "delete")
     @expose.expose(None, types.uuid, status_code=http_client.NO_CONTENT)
     def delete(self, uuid):
         """Delete an accelerator.
-        :param uuid: UUID of the accelerator."""
 
-        rpc_acc = self._resource or self._get_resource(uuid)
-
-        if rpc_acc == None:
-            status_code=http_client.NOT_FOUND
-
+        :param uuid: UUID of an accelerator.
+        """
+        obj_acc = self._resource or self._get_resource(uuid)
         context = pecan.request.context
-        pecan.request.conductor_api.accelerator_delete(context, rpc_acc)
+        pecan.request.conductor_api.accelerator_delete(context, obj_acc)
 

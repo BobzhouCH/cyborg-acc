@@ -111,14 +111,6 @@ class InvalidJsonType(Invalid):
     _msg_fmt = _("%(value)s is not JSON serializable.")
 
 
-class NotAuthorized(CyborgException):
-    _msg_fmt = _("Not authorized.")
-    code = http_client.FORBIDDEN
-
-
-class HTTPForbidden(NotAuthorized):
-    _msg_fmt = _("Access was denied to the following resource: %(resource)s")
-
 # Cannot be templated as the error syntax varies.
 # msg needs to be constructed when raised.
 class InvalidParameterValue(Invalid):
@@ -127,6 +119,16 @@ class InvalidParameterValue(Invalid):
 
 class PatchError(Invalid):
     _msg_fmt = _("Couldn't apply patch '%(patch)s'. Reason: %(reason)s")
+
+
+class NotAuthorized(CyborgException):
+    _msg_fmt = _("Not authorized.")
+    code = http_client.FORBIDDEN
+
+
+class HTTPForbidden(NotAuthorized):
+    _msg_fmt = _("Access was denied to the following resource: %(resource)s")
+
 
 class NotFound(CyborgException):
     _msg_fmt = _("Resource could not be found.")

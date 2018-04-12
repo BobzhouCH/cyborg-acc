@@ -39,6 +39,11 @@ CYBORG_CONF_DIR=${CYBORG_CONF_DIR:-/etc/cyborg}
 CYBORG_CONF_FILE=$CYBORG_CONF_DIR/cyborg.conf
 CYBORG_ROOTWRAP_CONF=$CYBORG_CONF_DIR/rootwrap.conf
 CYBORG_POLICY_JSON=$CYBORG_CONF_DIR/policy.json
+if [[ -d ${CYBORG_DIR}/bin ]]; then
+    CYBORG_BIN_DIR=${CYBORG_DIR}/bin
+else
+    CYBORG_BIN_DIR=$(get_python_exec_prefix)
+fi
 
 # install_cyborg() - Install the things!
 function install_cyborg {
@@ -105,7 +110,9 @@ function configure_cyborg {
     if is_service_enabled cyborg-api; then
         configure_cyborg_api
     fi
+
     # NOTE(crushil) Need to add logging
+
 }
 
 # configure_cyborg_api() - Is used by configure_cyborg(). Performs
@@ -144,7 +151,6 @@ function configure_cyborg_conductor {
     configure_auth_for service_catalog
 
     sudo cp $CYBORG_DIR/etc/cyborg/rootwrap.conf $CYBORG_ROOTWRAP_CONF
-    sudo chmod 0440 $CYBORG_DIR
     sudo cp -r $CYBORG_DIR/etc/cyborg/rootwrap.d $CYBORG_CONF_DIR
     local cyborg_rootwrap
     cyborg_rootwrap=$(get_rootwrap_location cyborg)
@@ -154,7 +160,6 @@ function configure_cyborg_conductor {
     local tempfile
     tempfile=`mktemp`
     echo "$STACK_USER ALL=(root) NOPASSWD: $rootwrap_isudoer_cmd" >$tempfile
-    sudo chmod 0440 $tempfile
     sudo chown root:root $tempfile
     sudo mv $tempfile /etc/sudoers.d/cyborg-rootwrap
 
@@ -177,6 +182,9 @@ function create_cyborg_cache_dir {
 
 # init_cyborg() - Initialize databases, etc.
 function init_cyborg {
+    # (re)create Cyborg database
+    recreate_database cyborg utf8
+
     # Migrate cyborg database
     $CYBORG_BIN_DIR/cyborg-dbsync --config-file=$CYBORG_CONF_FILE
     create_cyborg_cache_dir

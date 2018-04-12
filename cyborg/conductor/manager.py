@@ -38,20 +38,20 @@ class ConductorManager(object):
     def periodic_tasks(self, context, raise_on_error=False):
         pass
 
-    def accelerator_create(self, context, acc_obj):
+    def accelerator_create(self, context, obj_acc):
         """Create a new accelerator.
 
         :param context: request context.
-        :param acc_obj: a changed (but not saved) accelerator object.
+        :param obj_acc: a changed (but not saved) accelerator object.
         :returns: created accelerator object.
         """
         base_options={
             'project_id' : context.tenant,
             'user_id' : context.user
         }
-        acc_obj.update(base_options)
-        acc_obj.create(context)
-        return acc_obj
+        obj_acc.update(base_options)
+        obj_acc.create(context)
+        return obj_acc
 
     def accelerator_update(self, context, acc_obj):
         """Update an accelerator.

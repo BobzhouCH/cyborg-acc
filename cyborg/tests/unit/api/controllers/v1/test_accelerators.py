@@ -27,18 +27,17 @@ def gen_post_body(**kw):
     return db_utils.get_test_accelerator(**kw)
 
 
-def _rpcapi_accelerator_create(context, acc_obj):
+def _rpcapi_accelerator_create(context, obj_acc):
     """Fake used to mock out the conductor RPCAPI's accelerator_create method.
 
     Performs creation of the accelerator object and returns the created
     accelerator as-per the real method.
     """
-    acc_obj.create(context)
-    return acc_obj
+    obj_acc.create(context)
+    return obj_acc
 
 
-@mock.patch.object(rpcapi.ConductorAPI, 'accelerator_create', autospec=True,
-                   side_effect=_rpcapi_accelerator_create)
+
 class TestPost(v1_test.APITestV1):
 
     ACCELERATOR_UUID = '10efe63d-dfea-4a37-ad94-4116fba50981'
@@ -53,18 +52,16 @@ class TestPost(v1_test.APITestV1):
         self.addCleanup(p.stop)
 
     @mock.patch('oslo_utils.uuidutils.generate_uuid')
-    def test_accelerator_post(self, mock_uuid, mock_create):
+    def test_post(self, mock_uuid):
         mock_uuid.return_value = self.ACCELERATOR_UUID
 
         body = gen_post_body(name='post_accelerator')
-        headers = self.gen_headers(self.context)
         response = self.post_json('/accelerators', body, headers=self.headers)
         self.assertEqual(http_client.CREATED, response.status_int)
         response = response.json
         self.assertEqual(self.ACCELERATOR_UUID, response['uuid'])
         self.assertEqual(body['name'], response['name'])
-        mock_create.assert_called_once_with(mock.ANY, mock.ANY, mock.ANY)
-
+        self.mock_create.assert_called_once_with(mock.ANY, mock.ANY, mock.ANY)
 
 
 class TestList(v1_test.APITestV1):
@@ -72,7 +69,6 @@ class TestList(v1_test.APITestV1):
     def setUp(self):
         super(TestList, self).setUp()
         self.accs = []
-        # first create 3 accelerator then list them.
         for i in range(3):
             acc = obj_utils.create_test_accelerator(self.context)
             self.accs.append(acc)

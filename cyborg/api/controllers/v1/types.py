@@ -63,6 +63,7 @@ class JsonType(wtypes.UserType):
     def frombasetype(value):
         return JsonType.validate(value)
 
+
 class BooleanType(wtypes.UserType):
     """A simple boolean type."""
 
@@ -87,6 +88,7 @@ class BooleanType(wtypes.UserType):
 uuid = UUIDType()
 jsontype = JsonType()
 boolean = BooleanType()
+
 
 class JsonPatchType(wtypes.Base):
     """A complex type that represents a single json-patch operation."""

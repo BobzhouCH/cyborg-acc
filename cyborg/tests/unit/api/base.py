@@ -136,7 +136,6 @@ class BaseApiTest(base.DbTestCase):
 
         return headers
 
-
     def get_json(self, path, expect_errors=False, headers=None,
                  extra_environ=None, q=None, **params):
         """Sends simulated HTTP GET request to Pecan test app.

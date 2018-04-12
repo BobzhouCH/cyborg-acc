@@ -13,11 +13,15 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from oslo_log import log as logging
 from oslo_versionedobjects import base as object_base
 
 from cyborg.db import api as dbapi
 from cyborg.objects import base
 from cyborg.objects import fields as object_fields
+
+
+LOG = logging.getLogger(__name__)
 
 
 @base.CyborgObjectRegistry.register
@@ -41,10 +45,7 @@ class Accelerator(base.CyborgObject, object_base.VersionedObjectDictCompat):
         'remotable': object_fields.IntegerField(nullable=False),
     }
 
-    def __init__(self, *args, **kwargs):
-        super(Accelerator, self).__init__(*args, **kwargs)
-
-    def create(self, context=None):
+    def create(self, context):
         """Create an Accelerator record in the DB."""
         values = self.obj_get_changes()
         db_acc= self.dbapi.accelerator_create(context, values)
@@ -62,8 +63,7 @@ class Accelerator(base.CyborgObject, object_base.VersionedObjectDictCompat):
         """Return a list of Accelerator objects."""
         db_accs = cls.dbapi.accelerator_list(context, limit, marker, sort_key,
                                              sort_dir, project_only)
-        obj_accs = cls._from_db_object_list(context, db_accs)
-        return obj_accs
+        return cls._from_db_object_list(db_accs, context)
 
     def save(self, context):
         """Update an Accelerator record in the DB."""

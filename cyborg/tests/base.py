@@ -41,9 +41,6 @@ class TestCase(base.BaseTestCase):
     def setUp(self):
         super(TestCase, self).setUp()
         self.context = context.get_admin_context()
-
-        self._set_config()
-
         self._set_config()
         self.policy = self.useFixture(policy_fixture.PolicyFixture())
 

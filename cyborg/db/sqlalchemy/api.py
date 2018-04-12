@@ -21,6 +21,7 @@ from oslo_db import api as oslo_db_api
 from oslo_db import exception as db_exc
 from oslo_db.sqlalchemy import enginefacade
 from oslo_db.sqlalchemy import utils as sqlalchemyutils
+from oslo_log import log
 from oslo_utils import strutils
 from oslo_utils import uuidutils
 from sqlalchemy.orm.exc import NoResultFound
@@ -30,7 +31,10 @@ from cyborg.db.sqlalchemy import models
 from cyborg.common.i18n import _
 from cyborg.db import api
 
+
 _CONTEXT = threading.local()
+LOG = log.getLogger(__name__)
+
 
 def get_backend():
     """The backend is this module itself."""
@@ -160,6 +164,7 @@ class Connection(api.Connection):
                 ref = query.with_lockmode('update').one()
             except NoResultFound:
                 raise  exception.PortNotFound(uuid=uuid)
+
             ref.update(values)
         return ref
 
@@ -169,7 +174,7 @@ class Connection(api.Connection):
             query = model_query(context, models.Accelerator)
             query = add_identity_filter(query, uuid)
             count = query.delete()
-            if count == 0:
+            if count != 1:
                 raise  exception.AcceleratorNotFound(uuid=uuid)
 
 
