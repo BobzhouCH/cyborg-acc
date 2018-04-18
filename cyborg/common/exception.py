@@ -155,5 +155,24 @@ class PortAlreadyExists(CyborgException):
 class PortNotFound(NotFound):
     _msg_fmt = _("Port %(uuid)s could not be found.")
 
+
 class PortDuplicateName(Conflict):
     _msg_fmt = _("An port with name %(name)s already exists.")
+
+
+class PlacementEndpointNotFound(NotFound):
+    message = _("Placement API endpoint not found")
+
+
+class PlacementResourceProviderNotFound(NotFound):
+    message = _("Placement resource provider not found %(resource_provider)s.")
+
+
+class PlacementInventoryNotFound(NotFound):
+    message = _("Placement inventory not found for resource provider "
+                "%(resource_provider)s, resource class %(resource_class)s.")
+
+
+class PlacementInventoryUpdateConflict(Conflict):
+    message = _("Placement inventory update conflict for resource provider "
+                "%(resource_provider)s, resource class %(resource_class)s.")

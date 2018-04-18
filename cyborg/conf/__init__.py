@@ -18,6 +18,7 @@ from oslo_config import cfg
 from cyborg.conf import api
 from cyborg.conf import database
 from cyborg.conf import default
+from cyborg.conf import placement
 
 
 CONF = cfg.CONF
@@ -25,3 +26,4 @@ CONF = cfg.CONF
 api.register_opts(CONF)
 database.register_opts(CONF)
 default.register_opts(CONF)
+placement.register_opts(CONF)
