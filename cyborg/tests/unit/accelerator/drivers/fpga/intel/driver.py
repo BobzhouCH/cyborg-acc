@@ -91,3 +91,4 @@ class TestIntelFPGADriver(base.TestCase):
         # program PF
         intel.program("0000:5e:00.0", "/path/image")
         mock_popen.assert_called_with(expect_cmd, stdout=subprocess.PIPE)
+>>>>>>> be6cf4ef843e78d1cd45100f57c8f99f94c1ada5
