@@ -15,11 +15,10 @@
 """Accelerator base exception handling. """
 
 import collections
-
+import json
 from oslo_log import log as logging
 import six
 from six.moves import http_client
-
 from cyborg.common.i18n import _
 
 
@@ -118,3 +117,7 @@ class InvalidParameterValue(Invalid):
 
 class MissingParameterValue(InvalidParameterValue):
     _msg_fmt = "%(err)s"
+
+
+class InvalidAccelerator(InvalidParameterValue):
+    _msg_fmt = '%(err)s'
