@@ -82,3 +82,28 @@ class Connection(object):
     @abc.abstractmethod
     def port_destory(self, context, uuid):
         """Delete a port."""
+
+    #deployable
+    @abc.abstractmethod
+    def deployable_create(self, context, values):
+        """Create a new deployable."""
+
+    @abc.abstractmethod
+    def deployable_get(self, context, uuid):
+        """Get requested deployable."""
+
+    @abc.abstractmethod
+    def deployable_get_by_host(self, context, host):
+        """Get requested deployable by host."""
+
+    @abc.abstractmethod
+    def deployable_list(self, context):
+        """Get requested list of deployables."""
+
+    @abc.abstractmethod
+    def deployable_update(self, context, uuid, values):
+        """Update a deployable."""
+
+    @abc.abstractmethod
+    def deployable_delete(self, context, uuid):
+        """Delete a deployable."""

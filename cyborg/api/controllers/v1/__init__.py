@@ -23,6 +23,7 @@ from cyborg.api.controllers import base
 from cyborg.api.controllers import link
 from cyborg.api.controllers.v1 import accelerators
 from cyborg.api.controllers.v1 import ports
+from cyborg.api.controllers.v1 import deployables
 from cyborg.api import expose
 
 
@@ -62,6 +63,7 @@ class Controller(rest.RestController):
 
     accelerators = accelerators.AcceleratorsController()
     ports = ports.PortsController()
+    deployables = deployables.DeployablesController()
 
     @expose.expose(V1)
     def get(self):

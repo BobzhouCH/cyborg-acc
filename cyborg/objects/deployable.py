@@ -48,7 +48,7 @@ class Deployable(base.CyborgObject, object_base.VersionedObjectDictCompat):
         'type': object_fields.StringField(nullable=False),
         # similar to the acc_type in accelerator.py
         'assignable': object_fields.BooleanField(nullable=False),
-        # identify if an accelerator is in use
+        # identify if a instance is in use
         'instance_uuid': object_fields.UUIDField(nullable=True),
         # The id of the virtualized accelerator instance
         'availability': object_fields.StringField(nullable=False),

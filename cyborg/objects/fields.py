@@ -16,21 +16,10 @@
 from oslo_versionedobjects import fields as object_fields
 
 
-class IntegerField(object_fields.IntegerField):
-    pass
-
-
-class UUIDField(object_fields.UUIDField):
-    pass
-
-
-class StringField(object_fields.StringField):
-    pass
-
-
-class DateTimeField(object_fields.DateTimeField):
-    pass
-
+IntegerField = object_fields.IntegerField
+UUIDField = object_fields.UUIDField
+StringField = object_fields.StringField
+DateTimeField = object_fields.DateTimeField
 # added for port object
-class BooleanField(object_fields.BooleanField):
-    pass
+BooleanField = object_fields.BooleanField
+

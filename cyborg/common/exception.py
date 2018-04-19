@@ -176,3 +176,15 @@ class PlacementInventoryNotFound(NotFound):
 class PlacementInventoryUpdateConflict(Conflict):
     message = _("Placement inventory update conflict for resource provider "
                 "%(resource_provider)s, resource class %(resource_class)s.")
+
+
+class DeployableNotFound(NotFound):
+    _msg_fmt = _("Deployable %(uuid)s could not be found.")
+
+class DuplicateDeployableName(Conflict):
+    _msg_fmt = _("A deployable with name %(name)s already exists.")
+
+class ObjectActionError(CyborgException):
+    _msg_fmt = _('Object action %(action)s failed because: %(reason)s')
+
+
