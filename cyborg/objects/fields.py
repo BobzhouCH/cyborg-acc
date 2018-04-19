@@ -22,4 +22,9 @@ StringField = object_fields.StringField
 DateTimeField = object_fields.DateTimeField
 # added for port object
 BooleanField = object_fields.BooleanField
-
+ObjectField = object_fields.ObjectField
+ListOfObjectsField = object_fields.ListOfObjectsField
+ListOfStringsField = object_fields.ListOfStringsField
+IPAddressField = object_fields.IPAddressField
+IPNetworkField = object_fields.IPNetworkField
+UnspecifiedDefault = object_fields.UnspecifiedDefault
