@@ -20,6 +20,7 @@ from cyborg.common import exception
 from cyborg.db import api as dbapi
 from cyborg.objects import base
 from cyborg.objects import fields as object_fields
+from cyborg.objects.attibute import Attribute
 
 
 LOG = logging.getLogger(__name__)
@@ -31,8 +32,10 @@ class Deployable(base.CyborgObject, object_base.VersionedObjectDictCompat):
     VERSION = '1.0'
 
     dbapi = dbapi.get_instance()
+    attributes_list = []
 
     fields = {
+        'id': object_fields.IntegerField(nullable=False),
         'uuid': object_fields.UUIDField(nullable=False),
         'name': object_fields.StringField(nullable=False),
         'parent_uuid': object_fields.UUIDField(nullable=True),
@@ -53,6 +56,8 @@ class Deployable(base.CyborgObject, object_base.VersionedObjectDictCompat):
         # The id of the virtualized accelerator instance
         'availability': object_fields.StringField(nullable=False),
         # identify the state of acc, e.g released/claimed/...
+        'accelerator_id': object_fields.IntegerField(nullable=False)
+        # Foreign key constrain to reference accelerator table.
     }
 
     def _get_parent_root_uuid(self):
@@ -103,3 +108,33 @@ class Deployable(base.CyborgObject, object_base.VersionedObjectDictCompat):
         """Delete a Deployable from the DB."""
         self.dbapi.deployable_delete(context, self.uuid)
         self.obj_reset_changes()
+
+
+    def add_attribute(self, attribute):
+        """add a attribute object to the attribute_list.
+        If the attribute already exists, it will update the value,
+        otherwise, the vf will be appended to the list.
+        """
+        if not isinstance(attribute, Attribute):
+            raise exception.InvalidDeployType()
+        for exist_attr in self.attributes_list:
+            if base.obj_equal_prims(vf, exist_attr):
+                LOG.warning("The attribute already exists.")
+                return None
+
+    @classmethod
+    def get_by_filter(cls, context,
+                      filters, sort_key='created_at',
+                      sort_dir='desc', limit=None,
+                      marker=None, join=None):
+        obj_dpl_list = []
+        db_dpl_list = cls.dbapi.deployable_get_by_filters(context, filters,
+                                                          sort_key=sort_key,
+                                                          sort_dir=sort_dir,
+                                                          limit=limit,
+                                                          marker=marker,
+                                                          join_columns=join)
+        for db_dpl in db_dpl_list:
+            obj_dpl = cls._from_db_object(cls(context), db_dpl)
+            obj_dpl_list.append(obj_dpl)
+        return obj_dpl_list

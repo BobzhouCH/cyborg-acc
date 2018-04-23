@@ -177,14 +177,26 @@ class PlacementInventoryUpdateConflict(Conflict):
     message = _("Placement inventory update conflict for resource provider "
                 "%(resource_provider)s, resource class %(resource_class)s.")
 
-
+#deployable table
 class DeployableNotFound(NotFound):
     _msg_fmt = _("Deployable %(uuid)s could not be found.")
 
 class DuplicateDeployableName(Conflict):
     _msg_fmt = _("A deployable with name %(name)s already exists.")
 
+class InvalidDeployableType(CyborgException):
+    _msg_fmt = _("Deployable have an invalid type.")
+
 class ObjectActionError(CyborgException):
     _msg_fmt = _('Object action %(action)s failed because: %(reason)s')
 
+# attribute table
+class AttributeNotFound(NotFound):
+    _msg_fmt = _("Attribute %(uuid)s could not be found.")
+
+class AttributeInvalid(CyborgException):
+    _msg_fmt = _("Attribute is invalid.")
+
+class AttributeAlreadyExists(CyborgException):
+    _msg_fmt = _("Attribute with uuid %(uuid)s already exists.")
 

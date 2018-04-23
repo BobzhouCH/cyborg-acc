@@ -21,6 +21,7 @@ import six.moves.urllib.parse as urlparse
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Index
 from sqlalchemy import schema
+from sqlalchemy import Text
 
 from cyborg.common import paths
 from cyborg.conf import CONF
@@ -105,6 +106,7 @@ class Deployable(Base):
         schema.UniqueConstraint('uuid', name='uniq_deployables0uuid'),
         Index('deployables_parent_uuid_idx', 'parent_uuid'),
         Index('deployables_root_uuid_idx', 'root_uuid'),
+        Index('deployables_accelerator_id_idx', 'accelerator_id'),
         table_args()
     )
 
@@ -122,6 +124,9 @@ class Deployable(Base):
     version = Column(String(255), nullable=False)
     type = Column(String(255), nullable=False)
     assignable = Column(Boolean, nullable=False)
-  #  accelerator_id = Column(String(36), nullable=True)
     instance_uuid = Column(String(36), nullable=True)
     availability = Column(String(255), nullable=False)
+    accelerator_id = Column(Integer,
+                            ForeignKey('accelerators.id', ondelete="CASCADE"),
+                            nullable=False)
+
