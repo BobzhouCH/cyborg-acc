@@ -1,0 +1,12 @@
+[cyborg.database.migration_backend]
+sqlalchemy = cyborg.db.sqlalchemy.migration
+
+[oslo.policy.policies]
+cyborg.api = cyborg.common.policy:list_policies
+
+[console_scripts]
+cyborg-conductor = cyborg.cmd.conductor:main
+cyborg-api = cyborg.cmd.api:main
+cyborg-dbsync = cyborg.cmd.dbsync:main
+cyborg-agent = cyborg.cmd.agent:main
+

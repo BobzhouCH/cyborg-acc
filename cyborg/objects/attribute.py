@@ -33,9 +33,9 @@ class Attribute(base.CyborgObject, object_base.VersionedObjectDictCompat):
     dbapi = dbapi.get_instance()
 
     fields = {
-        'id': fields.IntegerField(nullable=False),
+        'id': object_fields.IntegerField(nullable=False),
         'uuid': object_fields.UUIDField(nullable=False),
-        'deployable_id': fields.IntegerField(nullable=False),
+        'deployable_id': object_fields.IntegerField(nullable=False),
         'key': object_fields.StringField(nullable=False),
         'value': object_fields.StringField(nullable=False)
     }

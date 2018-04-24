@@ -1,0 +1,41 @@
+Metadata-Version: 1.1
+Name: cyborg
+Version: 0.0.1.dev83
+Summary: Distributed Acceleration Management as a Service
+Home-page: https://www.openstack.org/
+Author: OpenStack
+Author-email: openstack-dev@lists.openstack.org
+License: UNKNOWN
+Description: ===============================
+        Cyborg
+        ===============================
+        
+        OpenStack Acceleration as a Service
+        
+        Cyborg provides a general management framework for accelerators such as
+        FPGA, GPU, SoCs, NVMe SSDs, CCIX caches, DPDK/SPDK, pmem  and so forth.
+        
+        * Free software: Apache license
+        * Source: https://git.openstack.org/cgit/openstack/cyborg
+        * Bugs: https://bugs.launchpad.net/openstack-cyborg
+        * Blueprints: https://blueprints.launchpad.net/openstack-cyborg
+        
+        Features
+        --------
+        
+        * REST API for basic accelerator life cycle management
+        * Generic driver for common accelerator support
+        
+        
+Platform: UNKNOWN
+Classifier: Environment :: OpenStack
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.5

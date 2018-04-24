@@ -293,4 +293,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     create_fake_sysfs(args.p)
->>>>>>> be6cf4ef843e78d1cd45100f57c8f99f94c1ada5

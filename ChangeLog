@@ -1,6 +1,21 @@
 CHANGES
 =======
 
+* add commit: implemented the Objects and APIs for vf/pf
+* fix bug of cyborg-api start failed. remove useless folder .idea and build
+* bug fix: devstack can not start cyborg
+* add queen commit: Added Unit tests for object Accelerator and Deployable
+* add queen commit: Add Cyborg SPDK Driver
+* add queen commit: Implement FPGA data model and corresponding API
+* add queen commit: aggent support resource tracker for FPGA
+* add queen commits: add spdk driver & add nova placement api client & add fpga driver support
+* add Queen commits: nova placement API client & FPGA driver support
+* merge below changes from cyborg queen release
+* merge below changes from cyborg queen release
+* merge below changes from cyborg queens release
+* bug fix for port resoruce update
+* add netronome driver and modify conduct agent for timer update resource
+* add bind and unbind after v1/ports/ url
 * Fix conflict
 * fix errors when doing conflicts solving
 * resolve conflicts between remote mitaka branch and local gjh branch

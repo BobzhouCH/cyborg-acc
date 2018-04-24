@@ -20,7 +20,7 @@ from cyborg.common import exception
 from cyborg.db import api as dbapi
 from cyborg.objects import base
 from cyborg.objects import fields as object_fields
-from cyborg.objects.attibute import Attribute
+from cyborg.objects.attribute import Attribute
 
 
 LOG = logging.getLogger(__name__)
