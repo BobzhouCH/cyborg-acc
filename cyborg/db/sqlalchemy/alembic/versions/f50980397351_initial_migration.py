@@ -72,7 +72,7 @@ def upgrade():
         sa.Column('instance_uuid', sa.String(length=36), nullable=True),
         sa.Column('availability', sa.Text(), nullable=False),
         sa.Column('accelerator_id', sa.Integer(),
-                  sa.ForeignKey('accelerator.id', ondelete="CASCADE"),
+                  sa.ForeignKey('accelerators.id', ondelete="CASCADE"),
                   nullable=False),
         sa.PrimaryKeyConstraint('id'),
         sa.UniqueConstraint('uuid', name='uniq_deployables0uuid'),

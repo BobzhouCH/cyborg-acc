@@ -90,13 +90,14 @@ class Deployable(base.CyborgObject, object_base.VersionedObjectDictCompat):
     def get_by_host(cls, context, host):
         """Get a Deployable by host."""
         db_deps = cls.dbapi.deployable_get_by_host(context, host)
-        return cls._from_db_object_list(db_deps, context)
+        #import pdb; pdb.set_trace()
+        return cls._from_db_object_list(context, db_deps)
 
     @classmethod
     def list(cls, context):
         """Return a list of Deployable objects."""
         db_deps = cls.dbapi.deployable_list(context)
-        return cls._from_db_object_list(db_deps, context)
+        return cls._from_db_object_list(context, db_deps)
 
     def save(self, context):
         """Update a Deployable record in the DB."""

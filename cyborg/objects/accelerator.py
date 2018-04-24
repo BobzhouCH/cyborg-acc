@@ -70,7 +70,7 @@ class Accelerator(base.CyborgObject, object_base.VersionedObjectDictCompat):
         """Return a list of Accelerator objects."""
         db_accs = cls.dbapi.accelerator_list(context, limit, marker, sort_key,
                                              sort_dir, project_only)
-        return cls._from_db_object_list(db_accs, context)
+        return cls._from_db_object_list(context, db_accs)
 
     def save(self, context):
         """Update an Accelerator record in the DB."""
