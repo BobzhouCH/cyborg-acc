@@ -54,7 +54,7 @@ class ConductorAPI(object):
         :param obj_acc: a created (but not saved) accelerator object.
         :returns: created accelerator object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'accelerator_create', obj_acc=obj_acc)
 
     def accelerator_update(self, context, acc_obj):
@@ -64,7 +64,7 @@ class ConductorAPI(object):
         :param acc_obj: an accelerator object to update.
         :returns: updated accelerator object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'accelerator_update', acc_obj=acc_obj)
 
     def accelerator_delete(self, context, acc_obj):
@@ -73,7 +73,7 @@ class ConductorAPI(object):
         :param context: request context.
         :param acc_obj: an accelerator to delete.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         cctxt.call(context, 'accelerator_delete', acc_obj=acc_obj)
 
     def accelerator_list_one(self, context, obj_acc):
@@ -84,7 +84,7 @@ class ConductorAPI(object):
         :returns: accelerator object.
         """
 
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         cctxt.call(context, 'get_one', obj_acc=obj_acc)
 
 
@@ -98,7 +98,7 @@ class ConductorAPI(object):
 
         """
 
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'get_all', obj_acc=obj_acc)
 
 
@@ -109,7 +109,7 @@ class ConductorAPI(object):
         :param port_obj: a created (but not saved) port object.
         :returns: created port object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'port_create', port_obj=port_obj)
 
     def port_bulk_create(self, context, port_list):
@@ -119,7 +119,7 @@ class ConductorAPI(object):
         :param port_list: port list need to be create and save.
         :returns: request result.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'port_bulk_create', port_list=port_list)
 
 
@@ -130,7 +130,7 @@ class ConductorAPI(object):
         :param port_obj: a port object to update.
         :returns: updated port object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'port_update', port_obj=port_obj)
 
 
@@ -140,7 +140,7 @@ class ConductorAPI(object):
         :param context: request context.
         :param port_obj: a port to delete.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         cctxt.call(context, 'port_delete', port_obj=port_obj)
 
 
@@ -151,7 +151,7 @@ class ConductorAPI(object):
         :param obj_dep: a created (but not saved) deployable object.
         :returns: created deployable object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'deployable_create', obj_dep=obj_dep)
 
     def deployable_update(self, context, obj_dep):
@@ -160,7 +160,7 @@ class ConductorAPI(object):
         :param obj_dep: a deployable object to update.
         :returns: updated deployable object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'deployable_update', obj_dep=obj_dep)
 
     def deployable_delete(self, context, obj_dep):
@@ -168,7 +168,7 @@ class ConductorAPI(object):
         :param context: request context.
         :param obj_dep: a deployable object to delete.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         cctxt.call(context, 'deployable_delete', obj_dep=obj_dep)
 
     def deployable_get(self, context, uuid):
@@ -177,7 +177,7 @@ class ConductorAPI(object):
         :param uuid: UUID of a deployable.
         :returns: requested deployable object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'deployable_get', uuid=uuid)
 
     def deployable_get_by_host(self, context, host):
@@ -186,7 +186,7 @@ class ConductorAPI(object):
         :param host: host on which the deployable is located.
         :returns: requested deployable object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'deployable_get_by_host', host=host)
 
     def deployable_list(self, context):
@@ -194,5 +194,5 @@ class ConductorAPI(object):
         :param context: request context.
         :returns: a list of deployable objects.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'deployable_list')
