@@ -13,10 +13,19 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import pecan
 import oslo_messaging as messaging
 
-from cyborg.conf import CONF
+from cyborg.accelerator.drivers.modules import netronome
+from cyborg.conductor import rpcapi as conductor_api
 
+from cyborg import objects
+
+from cyborg.conf import CONF
+from oslo_log import log as logging
+
+
+LOG = logging.getLogger(__name__)
 
 class AgentManager(object):
     """Cyborg Agent manager main class."""
@@ -26,12 +35,18 @@ class AgentManager(object):
 
     def __init__(self, topic, host=None):
         super(AgentManager, self).__init__()
+        self.conductor_api = conductor_api.ConductorAPI()
         self.topic = topic
         self.host = host or CONF.host
 
     def periodic_tasks(self, context, raise_on_error=False):
-        pass
+        self.update_available_resource(context)
 
     def hardware_list(self, context, values):
         """List installed hardware."""
         pass
+
+    def update_available_resource(self,context):
+        driver = netronome.NETRONOMEDRIVER()
+        port_resource = driver.get_available_resource()
+        self.conductor_api.port_bulk_create(context, port_resource)

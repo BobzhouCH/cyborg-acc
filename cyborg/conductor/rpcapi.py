@@ -91,6 +91,15 @@ class ConductorAPI(object):
         cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'port_create', port_obj=port_obj)
 
+    def port_bulk_create(self, context, port_list):
+        """Signal to conductor service to create a port.
+
+        :param context: request context.
+        :param port_list: port list need to be create and save.
+        :returns: request result.
+        """
+        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        return cctxt.call(context, 'port_bulk_create', port_list=port_list)
 
 
     def port_update(self, context, port_obj):

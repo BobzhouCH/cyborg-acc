@@ -198,6 +198,14 @@ class Connection(api.Connection):
         except NoResultFound:
             raise exception.PortNotFound(uuid=uuid)
 
+    def port_get(self, context, computer_node, phy_port_name, pci_slot):
+        query = model_query(context, models.Port).filter_by(computer_node=computer_node).\
+            filter_by(phy_port_name=phy_port_name).filter_by(pci_slot=pci_slot)
+        try:
+            return query.one()
+        except NoResultFound:
+            return None
+
     def port_list(self, context, limit, marker, sort_key, sort_dir):
         query = model_query(context, models.Port)
 

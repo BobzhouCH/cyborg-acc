@@ -85,7 +85,7 @@ class Port(Base):
 
     id = Column(Integer, primary_key=True)
     uuid = Column(String(36), nullable=False)
-    computer_id = Column(String(36), nullable=False)
+    computer_node = Column(String(36), nullable=False)
     phy_port_name = Column(String(255), nullable=False)
     pci_slot = Column(String(255), nullable=False)
     vendor_id = Column(String(255), nullable=False)
