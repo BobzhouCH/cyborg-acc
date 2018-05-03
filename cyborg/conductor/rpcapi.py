@@ -54,7 +54,7 @@ class ConductorAPI(object):
         :param acc_obj: a created (but not saved) accelerator object.
         :returns: created accelerator object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         #return cctxt.call(context, 'accelerator_create', values=acc_obj)
         return cctxt.call(context, 'accelerator_create', acc_obj=acc_obj)
 
@@ -66,7 +66,7 @@ class ConductorAPI(object):
         :param acc_obj: an accelerator object to update.
         :returns: updated accelerator object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'accelerator_update', acc_obj=acc_obj)
 
 
@@ -76,7 +76,7 @@ class ConductorAPI(object):
         :param context: request context.
         :param acc_obj: an accelerator to delete.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         cctxt.call(context, 'accelerator_delete', acc_obj=acc_obj)
 
 
@@ -88,7 +88,7 @@ class ConductorAPI(object):
         :param port_obj: a created (but not saved) port object.
         :returns: created port object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'port_create', port_obj=port_obj)
 
 
@@ -100,7 +100,7 @@ class ConductorAPI(object):
         :param port_obj: a port object to update.
         :returns: updated port object.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         return cctxt.call(context, 'port_update', port_obj=port_obj)
 
 
@@ -110,5 +110,5 @@ class ConductorAPI(object):
         :param context: request context.
         :param port_obj: a port to delete.
         """
-        cctxt = self.client.prepare(topic=self.topic, server=CONF.host)
+        cctxt = self.client.prepare(topic=self.topic)
         cctxt.call(context, 'port_delete', port_obj=port_obj)
